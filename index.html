@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="day">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -22,11 +22,35 @@
     --mint-soft:rgba(57,216,170,0.12);
     --radius:16px;
   }
+  [data-theme="day"]{
+    --bg:#F6F5F0;
+    --surface:#FCFBF8;
+    --surface-2:#EFECE4;
+    --ink:#161922;
+    --muted:#576071;
+    --line:#DFDBD0;
+    --accent:#4361EE;
+    --accent-ink:#2B44B8;
+    --accent-soft:rgba(67,97,238,0.10);
+    --mint:#0E8A68;
+    --mint-soft:rgba(14,138,104,0.10);
+  }
   *{box-sizing:border-box;}
   html{scroll-behavior:smooth;}
   body{
     margin:0; background:var(--bg); color:var(--ink);
     font-family:'Inter',sans-serif; -webkit-font-smoothing:antialiased; line-height:1.6;
+    transition:background-color .2s ease, color .2s ease;
+  }
+  body::before{
+    content:"";
+    position:fixed;
+    top:0; left:0; right:0;
+    height:24px;
+    background:var(--bg);
+    pointer-events:none;
+    z-index:20;
+    transition:background-color .2s ease;
   }
   h1,h2,h3{font-family:'Space Grotesk',sans-serif; margin:0; letter-spacing:-0.01em;}
   .mono{font-family:'JetBrains Mono',monospace;}
@@ -38,38 +62,46 @@
   }
 
   .sidebar{
-    position:sticky; top:24px;
+    position:sticky; top:24px; z-index:21;
     background:var(--surface); border:1px solid var(--line); border-radius:20px;
     padding:22px; text-align:center;
+    transition:background-color .2s ease, border-color .2s ease;
+  }
+  [data-theme="day"] .sidebar,
+  [data-theme="day"] .card{
+    box-shadow:0 2px 12px rgba(22,25,34,0.04);
   }
   .avatar{
     width:100%; aspect-ratio:1/1.02; object-fit:cover; border-radius:14px;
     border:1px solid var(--line); display:block;
   }
-  .sidebar h1{font-size:21px; margin-top:18px;}
-  .role{color:var(--accent-ink); font-size:13.5px; font-weight:500; margin-top:6px;}
-  .meta{margin-top:16px; display:flex; flex-direction:column; gap:6px; font-size:13px; color:var(--muted);}
+  .sidebar h1{font-size:20px; margin-top:18px;}
+  .role{color:var(--accent-ink); font-size:12px; font-weight:500; margin-top:6px;}
+  .meta{margin-top:5px; display:flex; flex-direction:column; gap:6px; font-size:13px; color:var(--muted);}
   .meta div{display:flex; align-items:center; justify-content:center; gap:6px;}
   .socials{display:flex; justify-content:center; gap:10px; margin-top:18px;}
   .social{
     width:36px; height:36px; border-radius:50%; border:1px solid var(--line);
     display:flex; align-items:center; justify-content:center; font-size:14px;
     text-decoration:none; color:var(--ink); background:var(--surface-2);
-    transition:border-color .15s, transform .15s;
+    cursor:pointer; padding:0;
+    transition:border-color .15s, transform .15s, background-color .2s ease, color .2s ease;
   }
   .social:hover{border-color:var(--accent); transform:translateY(-2px);}
   .social svg{width:16px; height:16px;}
   .cv-btn{
     display:block; margin-top:20px; background:var(--accent); color:#0B0E14;
     text-decoration:none; font-weight:600; font-size:14px; padding:12px 0;
-    border-radius:100px; transition:transform .15s, opacity .15s;
+    border-radius:100px; transition:transform .15s, opacity .15s, background-color .2s ease, color .2s ease;
   }
+  [data-theme="day"] .cv-btn{color:#FCFBF8;}
   .cv-btn:hover{transform:translateY(-2px); opacity:0.92;}
 
   .content{display:flex; flex-direction:column; gap:20px;}
   .card{
     background:var(--surface); border:1px solid var(--line); border-radius:var(--radius);
     padding:26px 28px;
+    transition:background-color .2s ease, border-color .2s ease;
   }
   .card h2{font-size:19px; margin-bottom:10px;}
   .rule{width:44px; height:3px; background:var(--accent); border-radius:2px; margin-bottom:18px;}
@@ -82,6 +114,7 @@
     background:var(--mint-soft); border:1px solid rgba(57,216,170,0.25);
     padding:5px 12px; border-radius:100px;
   }
+  [data-theme="day"] .tag-pill{border-color:rgba(14,138,104,0.28);}
 
   .edu-row{display:flex; justify-content:space-between; align-items:flex-start; gap:14px; flex-wrap:wrap;}
   .edu-row h3{font-size:15.5px;}
@@ -91,30 +124,63 @@
     background:var(--accent-soft); padding:6px 12px; border-radius:8px; white-space:nowrap;
   }
 
-  .grid{display:grid; grid-template-columns:1fr 1fr; gap:14px;}
+  .grid{display:flex; flex-direction:column; gap:14px;}
   .proj{
     background:var(--surface-2); border:1px solid var(--line); border-radius:14px;
-    padding:18px; display:flex; flex-direction:column; gap:9px;
-    transition:transform .15s, border-color .15s;
+    padding:20px; display:flex; align-items:flex-start; justify-content:space-between; gap:22px;
+    transition:transform .15s, border-color .15s, background-color .2s ease;
   }
   .proj:hover{transform:translateY(-2px); border-color:#2C3444;}
+  [data-theme="day"] .proj:hover{border-color:#C5BFA8;}
+  .proj-body{flex:1; min-width:0; display:flex; flex-direction:column; gap:10px;}
   .proj-top{display:flex; align-items:center; gap:11px;}
   .proj-icon{
     width:38px; height:38px; min-width:38px; border-radius:11px;
     display:flex; align-items:center; justify-content:center;
     font-family:'Space Grotesk',sans-serif; font-weight:700; color:#0B0E14; font-size:14px;
   }
-  .proj h3{font-size:14.5px; color:var(--ink);}
-  .proj .repo{font-family:'JetBrains Mono',monospace; font-size:11px; color:var(--muted); word-break:break-all;}
-  .proj p{font-size:13px; color:var(--muted); margin:0;}
+  img.proj-icon{object-fit:cover; display:block;}
+  .proj h3{font-size:15.5px; color:var(--ink);}
+  .proj .repo{font-family:'JetBrains Mono',monospace; font-size:11.5px; color:var(--muted); word-break:break-all;}
+  .proj p{font-size:13.5px; color:var(--muted); margin:0;}
   .proj-tags{display:flex; flex-wrap:wrap; gap:6px;}
   .proj-tag{
-    font-family:'JetBrains Mono',monospace; font-size:10.5px; color:var(--ink);
-    background:rgba(255,255,255,0.05); border:1px solid var(--line); padding:3px 8px; border-radius:6px;
+    font-family:'JetBrains Mono',monospace; font-size:11px; color:var(--ink);
+    background:rgba(255,255,255,0.05); border:1px solid var(--line); padding:3px 9px; border-radius:6px;
   }
-  .proj-links{display:flex; flex-wrap:wrap; gap:12px; margin-top:2px;}
-  .proj a.link{font-size:12px; font-weight:600; color:var(--accent); text-decoration:none;}
+  [data-theme="day"] .proj-tag{background:rgba(22,25,34,0.05);}
+  .proj-links{display:flex; flex-wrap:wrap; gap:14px; margin-top:2px;}
+  .proj a.link{font-size:12.5px; font-weight:600; color:var(--accent); text-decoration:none;}
   .proj a.link:hover{text-decoration:underline;}
+
+  .proj-image{
+    border-radius:10px;
+    border:1px solid var(--line);
+    box-shadow:0 8px 24px rgba(0,0,0,0.35);
+    object-fit:cover;
+    display:block;
+    flex-shrink:0;
+  }
+  [data-theme="day"] .proj-image{
+    box-shadow:0 8px 20px rgba(22,25,34,0.10);
+  }
+  .proj-image.landscape{
+    width:220px;
+    aspect-ratio:16 / 9;
+  }
+  .proj-image.portrait{
+    width:100px;
+    aspect-ratio:8.1 / 16;
+  }
+
+  .experience-image {
+  width: 100%;
+  max-width: 180px;
+  aspect-ratio: 1;
+  object-fit: contain;
+  border-radius: 12px;
+  margin-bottom: 16px;
+  }
 
   .skill-group{margin-bottom:16px;}
   .skill-group:last-child{margin-bottom:0;}
@@ -126,6 +192,7 @@
   .pill{
     border:1px solid var(--line); background:var(--surface-2); border-radius:9px;
     padding:7px 13px; font-size:13.5px; font-weight:500; color:var(--ink);
+    transition:background-color .2s ease, border-color .2s ease, color .2s ease;
   }
 
   .ach{display:flex; justify-content:space-between; align-items:center; gap:12px; padding:13px 0; border-bottom:1px dashed var(--line);}
@@ -136,6 +203,9 @@
   footer{text-align:center; padding:30px 0 0; color:var(--muted); font-size:12px; font-family:'JetBrains Mono',monospace;}
 
   @media(max-width:760px){
+    body::before{
+      height:12px;
+    }
     .page{grid-template-columns:1fr; padding-top:24px;}
     .sidebar{position:static; text-align:left; display:flex; align-items:center; gap:18px;}
     .avatar{width:88px; height:88px; aspect-ratio:auto; border-radius:14px;}
@@ -143,8 +213,11 @@
     .meta,.socials{justify-content:flex-start;}
     .meta div{justify-content:flex-start;}
     .cv-btn{display:none;}
-    .grid{grid-template-columns:1fr;}
     .sidebar-inner{flex:1;}
+
+    .proj{padding:16px; gap:14px; align-items:flex-start;}
+    .proj-image.portrait{width:88px;}
+    .proj-image.landscape{width:130px;}
   }
 </style>
 </head>
@@ -156,7 +229,7 @@
       <img class="avatar" src="assets/afnan.png" alt="Juboraz Afnan Mehmud">
       <div class="sidebar-inner">
         <h1>Juboraz Afnan Mehmud</h1>
-        <div class="role">CSE Undergraduate &middot; Mobile App Developer</div>
+        <div class="role">CSE Undergrad &middot; Mobile App Developer</div>
         <div class="meta">
           <div>United International University</div>
           <div>Dhaka, Bangladesh</div>
@@ -179,6 +252,15 @@
               <path fill="currentColor" d="M20.45 20.45h-3.56v-5.58c0-1.33-.03-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.68H9.34V8.98h3.42v1.57h.05c.48-.9 1.64-1.85 3.38-1.85 3.61 0 4.28 2.38 4.28 5.47v6.28ZM5.32 7.41a2.07 2.07 0 1 1 0-4.14 2.07 2.07 0 0 1 0 4.14ZM3.54 20.45h3.56V8.98H3.54v11.47Z"/>
             </svg>
           </a>
+
+          <button class="social" id="theme-toggle" type="button" aria-label="Switch to Night Mode" title="Switch to Night Mode">
+            <svg id="icon-sun" viewBox="0 0 24 24" aria-hidden="true" style="display:none;">
+              <path fill="currentColor" d="M12 7a5 5 0 1 0 0 10 5 5 0 0 0 0-10Zm0-5a1 1 0 0 1 1 1v2a1 1 0 1 1-2 0V3a1 1 0 0 1 1-1Zm0 16a1 1 0 0 1 1 1v2a1 1 0 1 1-2 0v-2a1 1 0 0 1 1-1ZM4.22 4.22a1 1 0 0 1 1.42 0l1.41 1.42a1 1 0 1 1-1.41 1.41L4.22 5.64a1 1 0 0 1 0-1.42Zm12.73 12.73a1 1 0 0 1 1.41 0l1.42 1.41a1 1 0 1 1-1.42 1.42l-1.41-1.42a1 1 0 0 1 0-1.41ZM2 12a1 1 0 0 1 1-1h2a1 1 0 1 1 0 2H3a1 1 0 0 1-1-1Zm16 0a1 1 0 0 1 1-1h2a1 1 0 1 1 0 2h-2a1 1 0 0 1-1-1ZM4.22 19.78a1 1 0 0 1 0-1.42l1.42-1.41a1 1 0 1 1 1.41 1.41l-1.41 1.42a1 1 0 0 1-1.42 0ZM16.95 7.05a1 1 0 0 1 0-1.41l1.41-1.42a1 1 0 1 1 1.42 1.42l-1.42 1.41a1 1 0 0 1-1.41 0Z"/>
+            </svg>
+            <svg id="icon-moon" viewBox="0 0 24 24" aria-hidden="true">
+              <path fill="currentColor" d="M20.74 13a1 1 0 0 0-1.22-.29A7.5 7.5 0 0 1 11.29 4.48a1 1 0 0 0-1.51-1.22A9.5 9.5 0 1 0 20.74 14.22a1 1 0 0 0 0-1.22Z"/>
+            </svg>
+          </button>
         </div>
         <a class="cv-btn" href="CV_Juboraz_Afnan_Mehmud.pdf">&#8595; Download CV</a>
       </div>
@@ -189,13 +271,12 @@
       <div class="card">
         <h2>About Me</h2>
         <div class="rule"></div>
-        <p>I'm pursuing a B.Sc. in Computer Science &amp; Engineering at United International University (UIU), Bangladesh. I enjoy building software that solves real-world problems, with interests spanning mobile application development, artificial intelligence, user experience, and game development.</p>
-        <p>Outside of coursework, I spend most of my time in Flutter and Dart. I'm currently expanding my skills in Unity while continuing to build mobile applications and exploring AI-powered solutions.</p>
+        <p>I'm pursuing a B.Sc. in Computer Science & Engineering at United International University. I enjoy building software that solves real-world problems, with interests in research, mobile app dev, machine learning, and game development.</p>
+
         <div class="interests">
-          <span class="tag-pill">Mobile Development</span>
-          <span class="tag-pill">AI &amp; Machine Learning</span>
-          <span class="tag-pill">Game Development</span>
-          <span class="tag-pill">UI/UX Design</span>
+          <span class="tag-pill">Research & Publications</span>
+          <span class="tag-pill">AI & Machine Learning</span>
+          <span class="tag-pill">Mobile App Development</span>
         </div>
       </div>
 
@@ -205,97 +286,113 @@
         <div class="grid">
 
           <div class="proj">
-            <div class="proj-top">
-              <div class="proj-icon" style="background:#6E8CFF;">PT</div>
-              <h3>PetTown</h3>
+            <div class="proj-body">
+              <div class="proj-top">
+                <img class="proj-icon" src="assets/pettown_logo.png" alt="PetTown">
+                <h3>PetTown</h3>
+              </div>
+              <p>An all-in-one mobile platform made with Flutter for pet owners to connect with other pet lovers, share moments, discover pet services like vets, salons, adoption, and marketplaces, and build a community, complete with a dedicated controller admin panel.</p>
+              <div class="proj-tags"><span class="proj-tag">Dart</span><span class="proj-tag">Flutter</span><span class="proj-tag">JavaScript</span><span class="proj-tag">Mobile App Dev</span><span class="proj-tag">API Integration</span></div>
+              <div class="proj-links">
+                <a class="link" href="https://github.com/AfnanAnikk/Pet-Town" target="_blank" rel="noopener">View repo &rarr;</a>
+              </div>
             </div>
-            <p>An all-in-one mobile platform made with Flutter for pet owners to connect with other pet lovers, share moments, discover pet services like vets, salons, adoption, and marketplaces, and build a community, complete with a dedicated controller admin panel.</p>
-            <div class="proj-tags"><span class="proj-tag">Dart</span><span class="proj-tag">Flutter</span></div>
-            <div class="repo">https://github.com/AfnanAnikk/Pet-Town</div>
-            <div class="proj-links">
-              <a class="link" href="https://github.com/AfnanAnikk/Pet-Town" target="_blank" rel="noopener">View repo &rarr;</a>
+            <img class="proj-image portrait" src="assets/PetTown.png" alt="PetTown">
+          </div>
+
+          <div class="proj">
+            <div class="proj-body">
+              <div class="proj-top">
+                <img class="proj-icon" src="assets/guardian_logo.png" alt="Guardian Collar" style="transform: scale(1.5);">
+                <h3>Guardian Collar</h3>
+              </div>
+              <p>A companion mobile app built with Flutter for the smart pet collar I made for Microprocessors &amp; Microcontrollers Lab.</p>
+              <div class="proj-tags"><span class="proj-tag">Dart</span><span class="proj-tag">Flutter</span><span class="proj-tag">JavaScript</span><span class="proj-tag">IoT</span><span class="proj-tag">API Integration</span></div>
+              <div class="proj-links">
+                <a class="link" href="https://github.com/AfnanAnikk/Guardian-Collar" target="_blank" rel="noopener">View repo &rarr;</a>
+              </div>
+            </div>
+            <img class="proj-image portrait" src="assets/GuardianCollar.png" alt="Guardian-Collar">
+          </div>
+
+          <div class="proj">
+            <div class="proj-body">
+              <div class="proj-top">
+                <img class="proj-icon" src="assets/omni_logo.png" alt="Omni" style="transform: scale(1);">
+                <h3>Omni macOS &amp; Omni Windows</h3>
+              </div>
+              <p>An invisible desktop AI assistant powered by Gemini built on Python, talks only when prompted with a key, and gives answers based on what it sees on screen, and what my requests are. Built primarily for macOS and Windows.</p>
+              <div class="proj-tags"><span class="proj-tag">Python</span><span class="proj-tag">Shell Scripting</span><span class="proj-tag">API Integration</span><span class="proj-tag">AI</span><span class="proj-tag">CSS</span><span class="proj-tag">macOS</span><span class="proj-tag">Windows</span></div>
+              <div class="proj-links">
+                <a class="link" href="https://github.com/AfnanAnikk/Omni" target="_blank" rel="noopener">macOS repo &rarr;</a>
+                <a class="link" href="https://github.com/AfnanAnikk/Omni-Windows" target="_blank" rel="noopener">Windows repo &rarr;</a>
+              </div>
+            </div>
+            <div style="display:flex; flex-direction:column; gap:10px; flex-shrink:0; align-items:center; align-self:center;">
+              <img src="assets/1.png" alt="Omni" style="width:140px; height:auto; display:block; background:transparent; transform:scale(0.9);">
+              <img src="assets/2.png" alt="Omni" style="width:140px; height:auto; display:block; background:transparent; transform:scale(0.9);">
             </div>
           </div>
 
           <div class="proj">
-            <div class="proj-top">
-              <div class="proj-icon" style="background:#B08CFF;">UX</div>
-              <h3>Pet Town UI/UX Design</h3>
+            <div class="proj-body">
+              <div class="proj-top">
+                <img class="proj-icon" src="assets/last_logo.jpeg" alt="Last-Card-game" style="transform: scale(1);">
+                <h3>Last Card Web App</h3>
+              </div>
+              <p>A web-based rendition of the classic UNO card game I made on TypeScript.</p>
+              <div class="proj-tags"><span class="proj-tag">TypeScript</span><span class="proj-tag">HTML</span><span class="proj-tag">CSS</span><span class="proj-tag">JavaScript</span></div>
+              <div class="proj-links">
+                <a class="link" href="https://github.com/AfnanAnikk/Last-Card-game" target="_blank" rel="noopener">View repo &rarr;</a>
+              </div>
             </div>
-            <p>Hand-designed the complete UI/UX for the PetTown platform in Figma as part of a SAD lab project.</p>
-            <div class="proj-tags"><span class="proj-tag">Figma</span></div>
-            <div class="repo">https://github.com/AfnanAnikk/Pet-Town-UI-UX-Design</div>
-            <div class="proj-links">
-              <a class="link" href="https://github.com/AfnanAnikk/Pet-Town-UI-UX-Design" target="_blank" rel="noopener">View repo &rarr;</a>
-            </div>
+            <img class="proj-image landscape" src="assets/LastMobile.png" alt="Last-Card-game">
           </div>
 
           <div class="proj">
-            <div class="proj-top">
-              <div class="proj-icon" style="background:#9B8CFF;">OM</div>
-              <h3>Omni &amp; Omni Windows</h3>
+            <div class="proj-body">
+              <div class="proj-top">
+                <img class="proj-icon" src="assets/last_logo.jpeg" alt="Last-Card-game" style="transform: scale(1);">
+                <h3>Last Card Mobile App</h3>
+              </div>
+              <p>A Flutter-based cross-platform rendition of the UNO-inspired Last Card game.</p>
+              <div class="proj-tags"><span class="proj-tag">Dart</span><span class="proj-tag">Flutter</span><span class="proj-tag">Mobile App Dev</span><span class="proj-tag">Game Development</span></div>
+              <div class="proj-links">
+                <a class="link" href="https://github.com/AfnanAnikk/Last-Card-Mobile-App" target="_blank" rel="noopener">View repo &rarr;</a>
+              </div>
             </div>
-            <p>An invisible desktop AI assistant powered by Gemini built on Python, talks only when prompted with a key, and gives answers based on what it sees on screen, and what my requests are. Built primarily for macOS and Windows.</p>
-            <div class="proj-tags"><span class="proj-tag">Python</span><span class="proj-tag">Gemini</span><span class="proj-tag">macOS</span><span class="proj-tag">Windows</span></div>
-            <div class="repo">https://github.com/AfnanAnikk/Omni</div>
-            <div class="proj-links">
-              <a class="link" href="https://github.com/AfnanAnikk/Omni" target="_blank" rel="noopener">macOS repo &rarr;</a>
-              <a class="link" href="https://github.com/AfnanAnikk/Omni-Windows" target="_blank" rel="noopener">Windows repo &rarr;</a>
-            </div>
+            <img class="proj-image landscape" src="assets/LastWeb.png" alt="Last-Card-game">
           </div>
 
           <div class="proj">
-            <div class="proj-top">
-              <div class="proj-icon" style="background:#39D8AA;">GC</div>
-              <h3>Guardian Collar</h3>
+            <div class="proj-body">
+              <div class="proj-top">
+                <div class="proj-icon" style="background:#F5B342;">BS</div>
+                <h3>BattleSquares</h3>
+              </div>
+              <p>My first project - a trading card game developed in JavaFX for AOOP course.</p>
+              <div class="proj-tags"><span class="proj-tag">Java</span><span class="proj-tag">JavaFX</span><span class="proj-tag">Game Development</span><span class="proj-tag">OOP</span></div>
+              <div class="proj-links">
+                <a class="link" href="https://github.com/AfnanAnikk/BattleSquares" target="_blank" rel="noopener">View repo &rarr;</a>
+              </div>
             </div>
-            <p>A companion mobile application built with Flutter for the smart pet collar I made for Microprocessors &amp; Microcontrollers Lab.</p>
-            <div class="proj-tags"><span class="proj-tag">Dart</span><span class="proj-tag">Flutter</span></div>
-            <div class="repo">https://github.com/AfnanAnikk/Guardian-Collar</div>
-            <div class="proj-links">
-              <a class="link" href="https://github.com/AfnanAnikk/Guardian-Collar" target="_blank" rel="noopener">View repo &rarr;</a>
-            </div>
+            <img class="proj-image landscape" src="assets/BattleSquares.png" alt="BattleSquares">
           </div>
 
           <div class="proj">
-            <div class="proj-top">
-              <div class="proj-icon" style="background:#F2777A;">LC</div>
-              <h3>Last Card Web App</h3>
+            <div class="proj-body">
+              <div class="proj-top">
+                <div class="proj-icon" style="background:#B08CFF;">UX</div>
+                <h3>Pet Town UI/UX Design</h3>
+              </div>
+              <p>Hand-designed the complete UI/UX for the PetTown platform in Figma as part of a SAD lab project.</p>
+              <div class="proj-tags"><span class="proj-tag">Figma</span><span class="proj-tag">User Interface Design</span><span class="proj-tag">UI/UX Design</span></div>
+              <div class="proj-links">
+                <a class="link" href="https://github.com/AfnanAnikk/Pet-Town-UI-UX-Design" target="_blank" rel="noopener">View repo &rarr;</a>
+              </div>
             </div>
-            <p>A web-based rendition of the classic UNO card game I made on TypeScript.</p>
-            <div class="proj-tags"><span class="proj-tag">TypeScript</span></div>
-            <div class="repo">https://github.com/AfnanAnikk/Last-Card-game</div>
-            <div class="proj-links">
-              <a class="link" href="https://github.com/AfnanAnikk/Last-Card-game" target="_blank" rel="noopener">View repo &rarr;</a>
-            </div>
+            <img class="proj-image landscape" src="assets/Figma.png" alt="Pet-Town-UI-UX-Design">
           </div>
-
-          <div class="proj">
-            <div class="proj-top">
-              <div class="proj-icon" style="background:#4FC3F7;">LM</div>
-              <h3>Last Card Mobile App</h3>
-            </div>
-            <p>A Flutter-based cross-platform rendition of the UNO-inspired Last Card game.</p>
-            <div class="proj-tags"><span class="proj-tag">Dart</span><span class="proj-tag">Flutter</span></div>
-            <div class="repo">https://github.com/AfnanAnikk/Last-Card-Mobile-App</div>
-            <div class="proj-links">
-              <a class="link" href="https://github.com/AfnanAnikk/Last-Card-Mobile-App" target="_blank" rel="noopener">View repo &rarr;</a>
-            </div>
-          </div>
-
-          <div class="proj">
-            <div class="proj-top">
-              <div class="proj-icon" style="background:#F5B342;">BS</div>
-              <h3>BattleSquares</h3>
-            </div>
-            <p>My first project - a trading card game developed in JavaFX for AOOP course.</p>
-            <div class="proj-tags"><span class="proj-tag">Java</span><span class="proj-tag">JavaFX</span></div>
-            <div class="repo">https://github.com/AfnanAnikk/BattleSquares</div>
-            <div class="proj-links">
-              <a class="link" href="https://github.com/AfnanAnikk/BattleSquares" target="_blank" rel="noopener">View repo &rarr;</a>
-            </div>
-          </div>
-
         </div>
       </div>
 
@@ -313,7 +410,7 @@
       </div>
 
       <div class="card">
-        <h2>Experience</h2>
+        <h2>Professional Experience</h2>
         <div class="rule"></div>
         <div class="edu-row">
           <div>
@@ -332,7 +429,7 @@
           <div class="pills">
             <span class="pill">Python</span><span class="pill">Dart</span><span class="pill">Java</span>
             <span class="pill">C++</span><span class="pill">C#</span><span class="pill">JavaScript</span>
-            <span class="pill">HTML</span>
+            <span class="pill">HTML</span><span class="pill">CSS</span>
           </div>
         </div>
         <div class="skill-group">
@@ -363,16 +460,50 @@
         <div class="edu-row">
           <div>
             <h3>B.Sc. in Computer Science and Engineering</h3>
-            <div class="school">United International University (UIU), Dhaka, Bangladesh</div>
+            <div class="school">United International University, Dhaka, Bangladesh</div>
           </div>
           <div class="badge">Expected Graduation: 2027</div>
         </div>
       </div>
 
-      <footer>Last updated Nov 18, 2026.</footer>
+      <footer>Last updated Nov 24, 2026.</footer>
 
     </main>
   </div>
 
+<script>
+  (function () {
+    const root = document.documentElement;
+    const toggle = document.getElementById('theme-toggle');
+    const sun = document.getElementById('icon-sun');
+    const moon = document.getElementById('icon-moon');
+
+    function applyTheme(theme) {
+      const isDay = theme === 'day';
+      if (isDay) {
+        root.setAttribute('data-theme', 'day');
+        sun.style.display = 'none';
+        moon.style.display = 'block';
+        toggle.setAttribute('aria-label', 'Switch to Night Mode');
+        toggle.setAttribute('title', 'Switch to Night Mode');
+      } else {
+        root.removeAttribute('data-theme');
+        sun.style.display = 'block';
+        moon.style.display = 'none';
+        toggle.setAttribute('aria-label', 'Switch to Day Mode');
+        toggle.setAttribute('title', 'Switch to Day Mode');
+      }
+    }
+
+    const saved = localStorage.getItem('portfolio-theme');
+    applyTheme(saved || 'day');
+
+    toggle.addEventListener('click', function () {
+      const next = root.getAttribute('data-theme') === 'day' ? 'night' : 'day';
+      applyTheme(next);
+      localStorage.setItem('portfolio-theme', next);
+    });
+  })();
+</script>
 </body>
 </html>
